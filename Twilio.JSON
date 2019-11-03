@@ -1,0 +1,466 @@
+{
+  "description": "A New Flow",
+  "states": [
+    {
+      "name": "Trigger",
+      "type": "InitialState",
+      "properties": {
+        "offset": {
+          "x": 30,
+          "y": 0
+        },
+        "flow_url": "https://webhooks.twilio.com/v1/Accounts/ACfd82d915b740b2aa27033bac1daf57c2/Flows/FWe5dda20bbc81ed8a7d71b37f870a0ced"
+      },
+      "transitions": [
+        {
+          "event": "incomingMessage",
+          "conditions": [],
+          "next": "FFafaba5d1698d5a00a153018923bb596f",
+          "uuid": "75aa3b2a-74e7-4d9c-994d-7b8ec0035175"
+        },
+        {
+          "event": "incomingCall",
+          "conditions": [],
+          "next": null,
+          "uuid": "fdb50839-0c62-4fd9-a502-bbfc6a4543fb"
+        },
+        {
+          "event": "incomingRequest",
+          "conditions": [],
+          "next": null,
+          "uuid": "6c3a9268-461c-488d-a672-f2ea02860e6d"
+        }
+      ],
+      "sid": "FFf567c3dbcacf50e6efccc1ef650bbff0"
+    },
+    {
+      "name": "user_business",
+      "type": "Branch",
+      "properties": {
+        "offset": {
+          "x": -70,
+          "y": 460
+        },
+        "input": "{{widgets.first_message.inbound.Body}}"
+      },
+      "transitions": [
+        {
+          "event": "noMatch",
+          "conditions": [],
+          "next": "FF0df897886fef748d7219f63ddf6d7056",
+          "uuid": "468c9e1d-8708-4c7c-b02c-95b7e6f7345e"
+        },
+        {
+          "event": "match",
+          "conditions": [
+            {
+              "friendly_name": "If value equal_to user",
+              "type": "equal_to",
+              "arguments": [
+                "{{widgets.first_message.inbound.Body}}"
+              ],
+              "value": "user"
+            }
+          ],
+          "next": "FF477b9a496f310cd5275b6642e3a428ba",
+          "uuid": "de56c1b9-8315-4977-b6d7-578c089dd2e4"
+        },
+        {
+          "event": "match",
+          "conditions": [
+            {
+              "friendly_name": "If value equal_to business",
+              "type": "equal_to",
+              "arguments": [
+                "{{widgets.first_message.inbound.Body}}"
+              ],
+              "value": "business"
+            }
+          ],
+          "next": "FF2ef7f3b20862e663c941bf056c4b5fe1",
+          "uuid": "6e061b45-f715-4fff-815f-5cc8d570d6f5"
+        }
+      ],
+      "sid": "FF85c3215b4be24177d5b6f339d8746740"
+    },
+    {
+      "name": "user_response",
+      "type": "MessagePrompt",
+      "properties": {
+        "offset": {
+          "x": -830,
+          "y": 940
+        },
+        "body": "Please text \"add\" to  +19382232218 to subscribe. Thanks for subscribing to DisasterCast!",
+        "from": "{{flow.channel.address}}",
+        "timeout": 20,
+        "save_response_as": null,
+        "media_url": null,
+        "service": "{{trigger.message.InstanceSid}}",
+        "channel": "{{trigger.message.ChannelSid}}",
+        "attributes": null
+      },
+      "transitions": [
+        {
+          "event": "incomingMessage",
+          "conditions": [],
+          "next": "FFa6d14fa5583a2c199b4dbfac8d03d319",
+          "uuid": "9a16d1f8-7e18-4415-a220-03ecfc4c6866"
+        },
+        {
+          "event": "timeout",
+          "conditions": [],
+          "next": null,
+          "uuid": "c75084cd-199f-4947-bee0-e225a778dbc1"
+        },
+        {
+          "event": "deliveryFailure",
+          "conditions": [],
+          "next": null,
+          "uuid": "e951e87f-bdea-4c18-a395-87613a12f51c"
+        }
+      ],
+      "sid": "FFc4548f1946e4b0f03c4d581dbab4bfdb"
+    },
+    {
+      "name": "business_decision",
+      "type": "MessagePrompt",
+      "properties": {
+        "offset": {
+          "x": 470,
+          "y": 870
+        },
+        "body": "In order to send a broadcast, please send the password you received upon your company's approval to be a broadcaster on DisasterCast.",
+        "from": "{{flow.channel.address}}",
+        "timeout": 20,
+        "save_response_as": null,
+        "media_url": null,
+        "service": "{{trigger.message.InstanceSid}}",
+        "channel": "{{trigger.message.ChannelSid}}",
+        "attributes": null
+      },
+      "transitions": [
+        {
+          "event": "incomingMessage",
+          "conditions": [],
+          "next": "FF55b9d41e0f351657e951a5231ed5394f",
+          "uuid": "c31f134a-971e-4e63-a906-66f0c6ded354"
+        },
+        {
+          "event": "timeout",
+          "conditions": [],
+          "next": null,
+          "uuid": "a7e8d657-4178-49a9-b52e-fe81c62e859e"
+        },
+        {
+          "event": "deliveryFailure",
+          "conditions": [],
+          "next": null,
+          "uuid": "15ee750e-0072-4471-b3e6-1cd2202aa636"
+        }
+      ],
+      "sid": "FF2ef7f3b20862e663c941bf056c4b5fe1"
+    },
+    {
+      "name": "register_broadcast",
+      "type": "Branch",
+      "properties": {
+        "offset": {
+          "x": 450,
+          "y": 1080
+        },
+        "input": "{{widgets.business_decision.inbound.Body}}"
+      },
+      "transitions": [
+        {
+          "event": "noMatch",
+          "conditions": [],
+          "next": "FFce1b9f49a565daa7297b2a5b4a21be40",
+          "uuid": "23e01779-a0d2-4dcf-bbc8-9e0def05e03f"
+        },
+        {
+          "event": "match",
+          "conditions": [
+            {
+              "friendly_name": "If value equal_to bubbles",
+              "type": "equal_to",
+              "arguments": [
+                "{{widgets.business_decision.inbound.Body}}"
+              ],
+              "value": "bubbles"
+            }
+          ],
+          "next": "FF41287083b2b90984014b0e549a94820c",
+          "uuid": "a9a8c7c1-8db3-4336-ae60-bed75896dc70"
+        }
+      ],
+      "sid": "FF55b9d41e0f351657e951a5231ed5394f"
+    },
+    {
+      "name": "subscribe_split",
+      "type": "Branch",
+      "properties": {
+        "offset": {
+          "x": -820,
+          "y": 1170
+        },
+        "input": "{{widgets.user_response.inbound.Body}}"
+      },
+      "transitions": [
+        {
+          "event": "noMatch",
+          "conditions": [],
+          "next": "FF33172ec11b2460e78ecb82bf66c1570b",
+          "uuid": "63596004-0e96-4db1-b340-b8367b5b3232"
+        },
+        {
+          "event": "match",
+          "conditions": [
+            {
+              "friendly_name": "If value equal_to subscribe",
+              "type": "equal_to",
+              "arguments": [
+                "{{widgets.user_response.inbound.Body}}"
+              ],
+              "value": "add"
+            }
+          ],
+          "next": "FF6f12ffe7f7bc378e66d1368787fd0520",
+          "uuid": "b90d8b91-956f-4bd5-984f-4e6b4d675bb0"
+        }
+      ],
+      "sid": "FFa6d14fa5583a2c199b4dbfac8d03d319"
+    },
+    {
+      "name": "final_user_message",
+      "type": "Message",
+      "properties": {
+        "offset": {
+          "x": -630,
+          "y": 1450
+        },
+        "body": "You will receive broadcasts before, during, and after a disaster.",
+        "from": "{{flow.channel.address}}",
+        "to": "{{contact.channel.address}}",
+        "media_url": null,
+        "service": "{{trigger.message.InstanceSid}}",
+        "channel": "{{trigger.message.ChannelSid}}",
+        "attributes": null
+      },
+      "transitions": [
+        {
+          "event": "sent",
+          "conditions": [],
+          "next": null,
+          "uuid": "cb5857b7-f413-43fd-b68a-4d08ac6aeb99"
+        },
+        {
+          "event": "failed",
+          "conditions": [],
+          "next": null,
+          "uuid": "b0d2e82d-3ecf-4a90-a424-cfda208ae4ad"
+        }
+      ],
+      "sid": "FF6f12ffe7f7bc378e66d1368787fd0520"
+    },
+    {
+      "name": "first_message",
+      "type": "MessagePrompt",
+      "properties": {
+        "offset": {
+          "x": 30,
+          "y": 230
+        },
+        "body": "Welcome to DisasterCast! Please type \"business\" if you are a business, or type \"user\" if you are a user.",
+        "from": "{{flow.channel.address}}",
+        "timeout": 10,
+        "save_response_as": null,
+        "media_url": null,
+        "service": "{{trigger.message.InstanceSid}}",
+        "channel": "{{trigger.message.ChannelSid}}",
+        "attributes": null
+      },
+      "transitions": [
+        {
+          "event": "incomingMessage",
+          "conditions": [],
+          "next": "FF85c3215b4be24177d5b6f339d8746740",
+          "uuid": "547a2a72-e711-4e28-b641-203317e86baf"
+        },
+        {
+          "event": "timeout",
+          "conditions": [],
+          "next": null,
+          "uuid": "1507acc4-2a8e-438d-9a0d-422e813e2e35"
+        },
+        {
+          "event": "deliveryFailure",
+          "conditions": [],
+          "next": null,
+          "uuid": "80020a66-d84f-48eb-9c47-7e11267e02cc"
+        }
+      ],
+      "sid": "FFafaba5d1698d5a00a153018923bb596f"
+    },
+    {
+      "name": "company_format_string",
+      "type": "Message",
+      "properties": {
+        "offset": {
+          "x": 630,
+          "y": 1330
+        },
+        "body": "Please send your company information in this specific format to +19382232218: Provide(CompanyName)  (CompanyType) (CompanyDescription) (CompanyAddress) (CompanyNumber)\n\nThanks for broadcasting and helping our community!",
+        "from": "{{flow.channel.address}}",
+        "to": "{{contact.channel.address}}",
+        "media_url": null,
+        "service": "{{trigger.message.InstanceSid}}",
+        "channel": "{{trigger.message.ChannelSid}}",
+        "attributes": null
+      },
+      "transitions": [
+        {
+          "event": "sent",
+          "conditions": [],
+          "next": null,
+          "uuid": "0d751dee-0d21-474c-b50e-abc3f1c3f5e7"
+        },
+        {
+          "event": "failed",
+          "conditions": [],
+          "next": null,
+          "uuid": "31cef71d-75ab-4011-a039-084dc22392ed"
+        }
+      ],
+      "sid": "FF41287083b2b90984014b0e549a94820c"
+    },
+    {
+      "name": "invalid_message_1",
+      "type": "Message",
+      "properties": {
+        "offset": {
+          "x": -350,
+          "y": 240
+        },
+        "body": "Sorry, we couldn't understand what you sent.",
+        "from": "{{flow.channel.address}}",
+        "to": "{{contact.channel.address}}",
+        "media_url": null,
+        "service": "{{trigger.message.InstanceSid}}",
+        "channel": "{{trigger.message.ChannelSid}}",
+        "attributes": null
+      },
+      "transitions": [
+        {
+          "event": "sent",
+          "conditions": [],
+          "next": "FFafaba5d1698d5a00a153018923bb596f",
+          "uuid": "f18beafc-f2ff-4d26-8b77-f872abaa4088"
+        },
+        {
+          "event": "failed",
+          "conditions": [],
+          "next": null,
+          "uuid": "48949834-8977-4357-a1d0-711ba0e18978"
+        }
+      ],
+      "sid": "FF0df897886fef748d7219f63ddf6d7056"
+    },
+    {
+      "name": "invalid_message_3",
+      "type": "Message",
+      "properties": {
+        "offset": {
+          "x": 100,
+          "y": 890
+        },
+        "body": "Sorry, your password is incorrect. Please try again.",
+        "from": "{{flow.channel.address}}",
+        "to": "{{contact.channel.address}}",
+        "media_url": null,
+        "service": "{{trigger.message.InstanceSid}}",
+        "channel": "{{trigger.message.ChannelSid}}",
+        "attributes": null
+      },
+      "transitions": [
+        {
+          "event": "sent",
+          "conditions": [],
+          "next": "FF2ef7f3b20862e663c941bf056c4b5fe1",
+          "uuid": "996976ba-a1b2-47a7-bb59-870ced2ffc71"
+        },
+        {
+          "event": "failed",
+          "conditions": [],
+          "next": null,
+          "uuid": "87965dcd-3fde-4b6b-8790-b7f79501b2e7"
+        }
+      ],
+      "sid": "FFce1b9f49a565daa7297b2a5b4a21be40"
+    },
+    {
+      "name": "welcome_new_user",
+      "type": "Message",
+      "properties": {
+        "offset": {
+          "x": -820,
+          "y": 610
+        },
+        "body": "Hello! Subscribing to our service allows you to receive broadcasts when companies are offering aid during natural disasters.",
+        "from": "{{flow.channel.address}}",
+        "to": "{{contact.channel.address}}",
+        "media_url": null,
+        "service": "{{trigger.message.InstanceSid}}",
+        "channel": "{{trigger.message.ChannelSid}}",
+        "attributes": null
+      },
+      "transitions": [
+        {
+          "event": "sent",
+          "conditions": [],
+          "next": "FFc4548f1946e4b0f03c4d581dbab4bfdb",
+          "uuid": "3e3f9c98-eb4b-4e22-abb8-e288c4cd41a5"
+        },
+        {
+          "event": "failed",
+          "conditions": [],
+          "next": null,
+          "uuid": "d84fc216-d93f-4296-8b74-0fdfc13e636c"
+        }
+      ],
+      "sid": "FF477b9a496f310cd5275b6642e3a428ba"
+    },
+    {
+      "name": "invalid_message_2",
+      "type": "Message",
+      "properties": {
+        "offset": {
+          "x": -1250,
+          "y": 970
+        },
+        "body": "Sorry, we could not understand what you sent. If you do not wish to subscribe, do not text anything.",
+        "from": "{{flow.channel.address}}",
+        "to": "{{contact.channel.address}}",
+        "media_url": null,
+        "service": "{{trigger.message.InstanceSid}}",
+        "channel": "{{trigger.message.ChannelSid}}",
+        "attributes": null
+      },
+      "transitions": [
+        {
+          "event": "sent",
+          "conditions": [],
+          "next": "FFc4548f1946e4b0f03c4d581dbab4bfdb",
+          "uuid": "c36daeac-7159-456a-aace-74f0e9d260d8"
+        },
+        {
+          "event": "failed",
+          "conditions": [],
+          "next": null,
+          "uuid": "6c19a966-99b3-4cfd-9f93-2f86b44a16c2"
+        }
+      ],
+      "sid": "FF33172ec11b2460e78ecb82bf66c1570b"
+    }
+  ]
+}
